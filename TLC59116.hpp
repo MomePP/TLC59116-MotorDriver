@@ -8,7 +8,23 @@
 #include "I2CUtils/I2C_Device.hpp"
 
 class TLC59116 : public I2CDevice {
+public:
+
+    enum class driver_mode : uint8_t {
+        OFF = 0b00,
+        FULLY_ON = 0b01, //no brightness/group/pwm control  
+        INDIVIDUAL = 0b10,
+        GROUP = 0b11 
+    };
+
+    enum class group_control : uint8_t {
+        DIMMING = 0,
+        BLINKING = 1
+    };
+
 private:
+
+    //registers
     constexpr static uint8_t _mode1 =       0x00;
     constexpr static uint8_t _mode2 =       0x01;
     constexpr static uint8_t _pwm0 =        0x02;
@@ -34,6 +50,7 @@ private:
     constexpr static uint8_t _grp_pwm =     0x12;
     constexpr static uint8_t _grp_freq =    0x13;
 
+
     constexpr static uint8_t _n_ctrl_regs = 4U;
 
     constexpr static float _min_period = 0.041;
@@ -55,18 +72,6 @@ private:
     }
 
 public:
-
-    enum class driver_mode : uint8_t {
-        OFF = 0b00,
-        FULLY_ON = 0b01, //no brightness/group/pwm control  
-        INDIVIDUAL = 0b10,
-        GROUP = 0b11 
-    };
-
-    enum class group_control : uint8_t {
-        DIMMING = 0,
-        BLINKING = 1
-    };
 
     TLC59116(uint8_t i2c_address) : I2CDevice(i2c_address){
         //init buffer for led control
@@ -127,7 +132,7 @@ public:
         write_register(_pwm0 + (led & 0x0F), val);
     }
 
-    void set_group_brightness(uint8_t val) {
+    void set_group_pwm(uint8_t val) {
         write_register(_grp_pwm, val);
     }
 
