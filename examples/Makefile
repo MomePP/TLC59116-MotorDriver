@@ -44,17 +44,19 @@ endif
 .PHONY: all test upload clean
 
 build: clean
-	$(ARDUINO_CLI) compile $(VERBOSE)   --build-path=$(BUILD_PATH) \
-										--build-cache-path=$(BUILD_PATH) \
-										--build-property "compiler.cpp.extra_flags=-std=c++14 -I${CURDIR}/.." \
-										-b $(BOARD_TYPE) $(NAME).ino
+	$(ARDUINO_CLI) compile $(VERBOSE) \
+		--build-path=$(BUILD_PATH) \
+		--build-cache-path=$(BUILD_PATH) \
+		--build-property "compiler.cpp.extra_flags=-std=c++14 -I${CURDIR}/.." \
+		-b $(BOARD_TYPE) $(NAME).ino
 
 compile-upload: clean build upload
 
 upload:
-	$(ARDUINO_CLI) upload $(VERBOSE) 	-p $(PORT) \
-									 	--fqbn $(BOARD_TYPE) \
-									 	-i $(BUILD_PATH)/$(NAME).ino.hex
+	$(ARDUINO_CLI) upload $(VERBOSE) \
+		-p $(PORT) \
+		--fqbn $(BOARD_TYPE) \
+		-i $(BUILD_PATH)/$(NAME).ino.hex
 
 clean:
 	$(IFEXIST) $(BUILD_DIR) $(RRM) $(BUILD_DIR)
