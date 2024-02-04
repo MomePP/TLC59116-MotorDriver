@@ -3,7 +3,7 @@
 #ifndef __TLC59116_HPP__
 #define __TLC59116_HPP__
 
-#include "i2c-register.hpp"
+#include "I2CUtils/i2c-register.hpp"
 
 #define DEFAULT_TLC59116_ADDRESS 0x60
 
