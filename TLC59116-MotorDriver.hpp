@@ -87,10 +87,17 @@ public:
     TLC59116()
         : TLC59116(DEFAULT_TLC59116_ADDRESS){};
 
-    void begin()
+    bool begin()
     {
+        bool deviceExists = false;
         Wire.begin();
-        _mode2_buf = read8(_mode2);
+        Wire.beginTransmission(DEFAULT_TLC59116_ADDRESS);
+        if (Wire.endTransmission() == 0)
+        {
+            deviceExists = true;
+            _mode2_buf = read8(_mode2);
+        }
+        return deviceExists;
     }
 
     void set_mode1(uint8_t mode)
