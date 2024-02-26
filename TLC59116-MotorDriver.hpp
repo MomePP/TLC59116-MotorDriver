@@ -190,12 +190,9 @@ public:
 
     static constexpr uint8_t seconds_to_freq(float seconds)
     {
-        if (seconds > _max_period)
-            return 255;
-        else if (seconds < _min_period)
-            return 0;
-        else
-            return 24 * seconds - 1;
+        return (seconds > _max_period)   ? 255
+               : (seconds < _min_period) ? 0
+                                         : static_cast<uint8_t>(24 * seconds - 1);
     }
 };
 
